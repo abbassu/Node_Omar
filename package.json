@@ -1,7 +1,9 @@
 {
   "dependencies": {
     "express": "^4.18.2",
+    "joi": "^17.9.2",
     "mysql": "^2.18.1",
+    "req-flash": "^0.0.3",
     "uninstall": "^0.0.0"
   },
   "name": "nodeapp",
@@ -11,7 +13,7 @@
     "nodemon": "^2.0.22"
   },
   "scripts": {
-    "start": "nodemon mysql.js",
+    "start": "nodemon App.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
