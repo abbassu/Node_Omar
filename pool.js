@@ -12,6 +12,7 @@ const pool=mysql.createPool({
 })
 
 const app= express();
+app.use(express.json);
 
 app.get('/get/:id',(req,res)=>{
     const id= req.params.id;
@@ -30,7 +31,7 @@ app.get('/get/:id',(req,res)=>{
 })
 
 
-app.use(express.json);
+
 app.put('/api/edit_JobList/:id',(req,res)=>{
 
     // const updateSchema = Joi.object({
@@ -72,8 +73,10 @@ app.put('/api/edit_JobList/:id',(req,res)=>{
 })
 
 app.post('/test',(req,res)=>{
-    console.log(req.body);
-    res.send(req.body);
+    
+    console.log('الله أكبر');
+   // console.log(req.body);
+    res.send('success test this your id'+id);
 })
 app.listen(4000,()=>{
     console.log('Listening on Port 4000 ...')
