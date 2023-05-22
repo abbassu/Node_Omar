@@ -88,6 +88,55 @@ app.get('/employees', (req, res) => {
   });
 });
 
+app.get('/employees/get/:id', (req, res) => {
+  console.log("iii11")
+
+  const employeeId = req.params.id;
+  // Retrieve the employee from the "employees" table
+  connection.query('SELECT * FROM employees WHERE id = ?', [employeeId], (err, result) => {
+    if (err) {
+      console.error('Error retrieving employee:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else if (result.length === 0) {
+      res.status(404).json({ error: 'Employee not found' });
+    } else {
+  console.log("iii22")
+
+      const employee = result[0];
+      res.json(employee);
+    }
+  });
+});
+
+
+app.get('/employees/delete/:id', (req, res) => {
+  console.log("iii")
+  const employeeId = req.params.id;
+  connection.query('DELETE FROM employees WHERE id = ?', [employeeId], (err, result) => {
+    if (err) {
+      console.error('Error deleting employee:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else if (result.affectedRows === 0) {
+      res.status(404).json({ error: 'Employee not found' });
+    } else {
+      res.json({ message: 'Employee deleted successfully' });
+    }
+  });
+});
+
+// app.get('/employees/add', (req, res) => {
+//   console.log("------------------",req.body)
+//   // const { id,name, address, experience, birthdate, specialization } = req.body;
+//   // Insert the new employee into the "employees" table
+//   // connection.query('INSERT INTO employees (id,name, address, experience, birthdate, specialization) VALUES (2,Abbas, haifa, 4, 12-1-2002, dev)', (err, result) => {
+//   //   if (err) {
+//   //     console.error('Error inserting employee:', err);
+//   //     res.status(500).json({ error: 'Internal Server Error' });
+//   //   } else {
+//   //     res.status(201).json({ message: 'Employee added successfully' });
+//   //   }
+//   // });
+// });
 
 app.get('/careers', (req, res) => {
   connection.query('SELECT * FROM careers', (err, results) => {
@@ -100,7 +149,17 @@ app.get('/careers', (req, res) => {
   });
 });
 
-
+app.get('/test', (req, res) => {
+  res.json({ message: 'Employee deleted successfully',body:req.body });
+  connection.query('SELECT * FROM careers', (err, results) => {
+    if (err) {
+      console.error('Error retrieving data from MySQL:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.json(results);
+  });
+});
 app.get('/managers', (req, res) => {
   connection.query('SELECT * FROM managers', (err, results) => {
     if (err) {
@@ -112,6 +171,46 @@ app.get('/managers', (req, res) => {
   });
 });
 
+// app.get('/managers444/:id', (req, res) => {
+//   const employeeId = req.params.id;
+//   console.log("22222222eeeeeee222---",employeeId)
+//   connection.query('SELECT * FROM managers', (err, results) => {
+//     if (err) {
+//       console.error('Error retrieving data from MySQL:', err);
+//       res.status(500).send('Internal Server Error');
+//       return;
+//     }
+//     res.json(results);
+//   });
+// });
+
+// API endpoint to delete an employee
+// app.delete('/employees/delete', (req, res) => {
+//   const employeeId = req.params.id;
+//   console.log("22222222222---",employeeId)
+
+//   // Delete the employee from the "employees" table
+//   db.query(`DELETE FROM employees WHERE id = 2`, [2], (err, result) => {
+//     if (err) {
+//       console.error('Error deleting employee:', err);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//     } else if (result.affectedRows === 0) {
+//       console.log("11111111111")
+//       res.status(404).json({ error: 'Employee not found' });
+//     } else {
+//       console.log("22222222222")
+
+//       res.json({ message: 'Employee deleted successfully' });
+//     }
+//   });
+// });
+
+
+
+
+
+
+
 ////////////////////////////////////////////////////////
 
 
@@ -120,3 +219,41 @@ app.get('/managers', (req, res) => {
 app.listen(8081, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+
+
+
+
+
+
+const mysql=require('mysql');
+const express=require('express');
+const Joi=require('joi');
+const db=require('./DB_Conn');
+
+ const app=express();
+
+
+
+
+
+app.get('/api/application/GPA', (req, res) => {
+    const { GPA } = req.query;
+  
+    // Construct the SQL query based on the received criteria
+    const sql = `SELECT * FROM application
+    WHERE GBA > ${Number(GPA)};
+  `;
+  
+    // Execute the SQL query
+    db.query(sql, (error, results) => {
+      if (error) {
+        console.error('Error executing query:', error);
+        res.status(500).json({ error: 'Error retrieving jobs' });
+        return;
+      }
+      res.json(results); // Return the matching job listings as the API response
+    });
+  });
+
