@@ -7,10 +7,11 @@ const db=require('./DB_Conn');
  
 // git Job List according to id
 
-app.get('/api/application/:id',(req,res)=>{
-    let id=req.params.id;
-    const sql="SELECT * FROM application; WHERE app_ID=";
-    db.query(sql+id,(err,result)=>{
+app.get('/api/application',(req,res)=>{
+   // let id=req.params.id;
+   //WHERE app_ID=
+    const sql="SELECT * FROM application ";
+    db.query(sql,(err,result)=>{
         if(err)
         {
             throw err;
@@ -64,10 +65,6 @@ app.post('/api/insertApplication',(req,res)=>{
             res.status(500).send('Error inserting Application');
             return;
           }
-          if(!result)
-          {
-              res.status(404).send('This Application with given ID was not exist');
-          }
           console.log('Application inserted successfully!');
           res.status(200);
           res.send('Application inserted successfully!');
@@ -112,21 +109,21 @@ app.put('/api/edit_Application/:id',(req,res)=>{
 
 
 
-app.delete('/delete_JobList/:id',(req,res)=>{
+app.delete('/delete_Application/:id',(req,res)=>{
     const id=req.params.id;
 
-    const sql="delete from job_listing WHERE JobList_ID= ?";
+    const sql="delete from Application WHERE JobList_ID= ?";
     db.query(sql,id,(err,result)=>{
         if(err){
-            console.error("Error deleting Job List: ", err);
-            res.status(500).send("An error occurred while deleting the Job List");
+            console.error("Error deleting Application: ", err);
+            res.status(500).send("An error occurred while deleting the Application");
             return;
         }
         if(!result)
         {
-            res.status(404).send('This Job_List with given ID was not exist');
+            res.status(404).send('This Application with given ID was not exist');
         }
-        res.send('The Job List with id = '+id+' is deleted !');
+        res.send('The Application with id = '+id+' is deleted !');
     })
 })
 

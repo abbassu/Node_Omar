@@ -81,7 +81,7 @@ app.post('/api/insertJobList',(req,res)=>{
 
  })
 
- //delete job list
+ //update job list
 app.put('/api/edit_JobList/:id',(req,res)=>{
 
     const updateSchema = Joi.object({
@@ -106,10 +106,7 @@ app.put('/api/edit_JobList/:id',(req,res)=>{
     let salary_range=req.body.salary_range;
     let location=req.body.location;
 
-    var form_data = {
-        Employer_Name: Employer_Name,
-        Email: Email
-    }
+
     const sql="UPDATE job_listing SET title=?,description=? requirements=? salary_range=? location=?  WHERE JobList_ID= ?";
     db.query(sql,[title,description,requirements,salary_range,location],(err,result)=>{
         if(err) {
